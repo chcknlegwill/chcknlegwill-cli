@@ -3,8 +3,8 @@
 OS=$(uname -s)
 ARCH=$(uname -m)
 
-if [ "$OS" = "Linux" ] && ["$ARCH" = "x86_64"]; then
-  BINARY_URL="https://github.com/chcknlegwill/chcknlegwill-cli/releases/download/First/chcknlegwill-cli-linux-x86_64"  #linux version #finish this
+if [ "$OS" = "Linux" ] && [ "$ARCH" = "x86_64" ]; then
+  BINARY_URL="https://github.com/chcknlegwill/chcknlegwill-cli/releases/download/First/chcknlegwill-cli-linux-x86_64"  #linux version
 elif [ "$OS" = "Darwin" ] && [ "$ARCH" = "arm64" ]; then
   BINARY_URL="https://github.com/chcknlegwill/chcknlegwill-cli/releases/download/First/chcknlegwill-cli-macos-darwin" #macos version
 else
@@ -18,9 +18,24 @@ curl -L "$BINARY_URL" -o chcknlegwill-cli
 echo "Making the executable..."
 chmod +x chcknlegwill-cli
 
-if [ ! -d "$HOME/bin" ]; then
-  echo "Creating ~/bin directory..."
-  mkdir "$HOME/bin"
+
+# Check if binary already exists in /usr/local/bin
+if [ -f "/usr/local/bin/chcknlegwill-cli" ]; then
+  echo "Warning: chcknlegwill-cli already exists in /usr/local/bin. Overwrite? (y/n)"
+  read -r response
+  if [ "$response" != "y" ] && [ "$response" != "Y" ]; then
+    echo "Installation aborted."
+    exit 1
+  fi
+  sudo mv /usr/local/bin/chcknlegwill-cli /usr/local/bin/chcknlegwill-cli.old
+fi
+
+# Install to /usr/local/bin with sudo
+echo "Installing to /usr/local/bin..."
+sudo mv chcknlegwill-cli /usr/local/bin/
+
+if ! echo "$PATH" | grep -q "/usr/local/bin"; then
+  echo "Note: Ensure /usr/local/bin is in your PATH. You may need to log out / in or run export PATH\"usr/local/bin:$PATH\""
 fi
 
 echo "Installation complete!"
