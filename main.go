@@ -3,62 +3,41 @@ package main
 import (
 	"flag"
 	"fmt"
-	"io/ioutil"
 	"os"
-	"path/filepath"
-	"strings"
+
+	"github.com/spf13/pflag"
 )
 
-//chcknlegwill-cli v1.0.0
+//chcknlegwill-cli v1.0.1
 
 func main() {
-	// Collect and clean command-line arguments
-	input := make([]string, 0, len(os.Args)-1)
-	for _, arg := range os.Args[1:] {
-		trimmed := strings.TrimSpace(arg)
-		if trimmed != "" {
-			input = append(input, trimmed)
-		}
+	// define cli flags ("-h", "--help", "-f")
+	searchString := pflag.StringP("f", "f", "", "Search for a string in files and folders recursivley.")
+	help := pflag.BoolP("help", "h", false, "Show help message.")
+	pflag.CommandLine.SortFlags = false
+	pflag.Parse()
+
+	// Show help if requested
+	if *help || (pflag.NFlag() == 0) {
+		fmt.Print("Usage:\nchcknlegwill-cli -f <string> | Search for a string within the current directory and folders recursivley. \n")
+		fmt.Print("chcknlegwill-cli -h --help Show this help message.\n")
+		return
 	}
 
-	if len(input) == 0 {
-		fmt.Println("chcknlegwill-cli v1.0.0")
-	}
-
-	searchString := flag.String("f", "", "Search for a string")
-	flag.Parse()
-
-	if *searchString == "" {
-		args := make([]string, 0, len(os.Args))
-		for _, arg := range os.Args[1:] {
-			trimmed := strings.TrimSpace(arg)
-			if trimmed != "" {
-				args = append(args, trimmed)
-			}
-		}
-	}
-
-	err := filepath.Walk(".", func(path string, info os.FileInfo, err error) error {
-		if err != nil {
-			return err
-		}
-
-		if info.IsDir() {
-			return nil
-		}
-
-		content, err := ioutil.ReadFile(path)
-		if err != nil {
-			return err
-		}
-		if strings.Contains(strings.ToLower(string(content)), strings.ToLower(*searchString)) {
-			fmt.Printf("Found '%s' in: %s\n", *searchString, path)
-		}
-		return nil
-	})
-	if err != nil {
-		fmt.Fprintf(os.Stderr, "Error walking the path: %v\n", err)
+	// Check if -f is provided but no value is given
+	if *searchString == "" && flag.NFlag() > 0 {
+		fmt.Fprintf(os.Stderr, "Error: The -f flag requires a search string (e.g., -f keyword)\n")
 		os.Exit(1)
+	}
+
+	// If -f is provided with a string, trigger search functionality
+	if *searchString != "" {
+		err := searchFiles(*searchString)
+		if err != nil {
+			fmt.Fprintf(os.Stderr, "Error during search: %v\n", err)
+			os.Exit(1)
+		}
+		return
 	}
 
 }
