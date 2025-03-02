@@ -1,5 +1,8 @@
 package main
 
+//work on highlighting it in the terminal
+//propably have to use some other binary.
+
 import (
 	"fmt"
 	"os"
