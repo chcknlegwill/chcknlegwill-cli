@@ -37,20 +37,20 @@ func searchFiles(searchStr string) error {
 		// Only skip hidden files and directories (names starting with .) if they are not the root directory "."
 		if path != "." && strings.HasPrefix(info.Name(), ".") {
 			if info.IsDir() {
-				fmt.Printf("Skipping hidden dir: %s\n", path)
+				//fmt.Printf("Skipping hidden dir: %s\n", path)
 				return filepath.SkipDir // Skip entire hidden directories like .git
 			}
-			fmt.Printf("Skipping hidden file: '%s'\n", path)
+			//fmt.Printf("Skipping hidden file: '%s'\n", path)
 			return nil // Skip hidden files
 		}
 
 		// Only process regular files (not directories)
 		if !info.IsDir() {
 			if !isReadableFile(path) {
-				fmt.Printf("Skipping unreadable file: %s\n", path)
+				//				fmt.Printf("Skipping unreadable file: %s\n", path)
 				return nil
 			}
-			fmt.Printf("Processing file: %s\n", path)
+			//fmt.Printf("Processing file: %s\n", path)
 			line, lineNumber, err := Readln(searchStr, path) // searchStr is the search string, path is the file path
 			if err != nil && !strings.Contains(err.Error(), "not found") {
 				return fmt.Errorf("error reading %s: %v", path, err)
