@@ -54,7 +54,8 @@ func searchFiles(searchStr string) error {
 			}
 			if line != "" {
 				found = true
-				fmt.Printf("Found '%s' in %s on line %d: %s\n", searchStr, path, lineNumber, line)
+				trimmed := strings.TrimSpace(line)
+				fmt.Printf("Found '%s' in %s on line %d: %s\n", searchStr, path, lineNumber, trimmed)
 			}
 		}
 		return nil
