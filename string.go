@@ -3,7 +3,7 @@ package main
 //work on highlighting it in the terminal
 //propably have to use some other binary.
 
-//
+// Get the full path (include current Dir in the output)
 
 import (
 	"fmt"
@@ -33,21 +33,28 @@ func isReadableFile(path string) bool {
 
 func searchFiles(searchStr string) error {
 
-	red := chalk.Red.NewStyle().WithBackground(chalk.Red)
+	ex, err := os.Executable()
+	if err != nil {
+		panic(err)
+	}
+	exPath := filepath.Dir(ex)
+	//fmt.Println(exPath)
+
+	//red := chalk.Red.NewStyle().WithBackground(chalk.Red)
 	green := chalk.Green.NewStyle()
 	found := false
 	// Walk through the current directory to find files
-	err := filepath.Walk(".", func(path string, info os.FileInfo, err error) error {
+	err = filepath.Walk(".", func(path string, info os.FileInfo, err error) error {
 		if err != nil {
 			return err
 		}
 		// Only skip hidden files and directories (names starting with .) if they are not the root directory "."
 		if path != "." && strings.HasPrefix(info.Name(), ".") {
 			if info.IsDir() {
-				fmt.Printf(red.Style("Skipping hidden dir: %s\n"), path)
+				//fmt.Printf(red.Style("Skipping hidden dir: %s\n"), path)
 				return filepath.SkipDir // Skip entire hidden directories like .git
 			}
-			fmt.Printf(red.Style("Skipping hidden file: '%s'\n"), path)
+			//fmt.Printf(red.Style("Skipping hidden file: '%s'\n"), path)
 			return nil // Skip hidden files
 		}
 
@@ -65,7 +72,9 @@ func searchFiles(searchStr string) error {
 			if line != "" {
 				found = true
 				trimmed := strings.TrimSpace(line)
-				fmt.Printf(green.Style("Found '%s' in %s on line %d: %s\n"), searchStr, path, lineNumber, trimmed)
+				fmt.Printf(green.Style("Found")+" '%s' in path: %s/%s on line %d: %s\n", searchStr, exPath, path, lineNumber, trimmed)
+				//fmt.Println("Path: ", path)
+				//don't use commas unless you need to ^ concatenation works well.
 			}
 		}
 		return nil

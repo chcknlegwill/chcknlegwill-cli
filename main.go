@@ -5,8 +5,10 @@ import (
 	"os"
 
 	"github.com/spf13/pflag"
-	"github.com/ttacon/chalk"
 )
+
+//Going to try and keep other imports to a minimum - only ones that
+//I really need.
 
 // chcknlegwill-cli v1.0.3
 
@@ -24,7 +26,7 @@ func main() {
 	//working - add a verbose flag that outputs skipped files
 	//as well as optional thorough search that includes all files prefixed with "."
 	//e.g. .DS_Store .gitignore etc...
-	red := chalk.Red.NewStyle().WithForeground(chalk.Red)
+	//red := chalk.Red.NewStyle().WithForeground(chalk.Red)
 	//fmt.Print(red.Style("Bruh moment"))
 
 	// Show help if requested
@@ -44,7 +46,7 @@ func main() {
 	if *searchString != "" {
 		err := searchFiles(*searchString) // Pass the search string to searchFiles
 		if err != nil {
-			fmt.Fprintf(os.Stderr, red.Style("Error during search: %v\n"), err)
+			//fmt.Fprintf(os.Stderr, red.Style("Error during search: %v\n"), err)
 			os.Exit(1)
 		}
 	}
