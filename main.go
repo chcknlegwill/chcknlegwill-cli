@@ -5,16 +5,27 @@ import (
 	"os"
 
 	"github.com/spf13/pflag"
+	"github.com/ttacon/chalk"
 )
 
-// chcknlegwill-cli v1.0.1
+// chcknlegwill-cli v1.0.3
+
+func init() {
+
+}
 
 func main() {
 	// Define CLI flags ("-h", "--help", "-f")
 	searchString := pflag.StringP("string", "f", "", "Search for a string in files and folders recursively.")
-	help := pflag.BoolP("help", "h", false, "Show help message.")
+	help := pflag.BoolP("help", "h", false, "Show this help message.")
 	pflag.CommandLine.SortFlags = false
 	pflag.Parse()
+
+	//working - add a verbose flag that outputs skipped files
+	//as well as optional thorough search that includes all files prefixed with "."
+	//e.g. .DS_Store .gitignore etc...
+	red := chalk.Red.NewStyle().WithForeground(chalk.Red)
+	//fmt.Print(red.Style("Bruh moment"))
 
 	// Show help if requested
 	if *help || (pflag.NFlag() == 0) {
@@ -33,7 +44,7 @@ func main() {
 	if *searchString != "" {
 		err := searchFiles(*searchString) // Pass the search string to searchFiles
 		if err != nil {
-			fmt.Fprintf(os.Stderr, "Error during search: %v\n", err)
+			fmt.Fprintf(os.Stderr, red.Style("Error during search: %v\n"), err)
 			os.Exit(1)
 		}
 	}

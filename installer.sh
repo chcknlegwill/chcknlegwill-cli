@@ -45,6 +45,8 @@ if ! chmod +x chcknlegwill-cli; then
   exit 1
 fi
 
+#/usr/local/bin is protected so you will need sudo, but makes it so you can call the 
+# tool anywhere e.g. in ~ (/home/$USER/) or in ~/Documents/project/ for ease of use
 INSTALL_DIR="/usr/local/bin"
 TARGET_PATH="$INSTALL_DIR/chcknlegwill-cli"
 

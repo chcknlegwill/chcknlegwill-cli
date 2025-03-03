@@ -3,12 +3,16 @@ package main
 //work on highlighting it in the terminal
 //propably have to use some other binary.
 
+//
+
 import (
 	"fmt"
 	"os"
 	"path/filepath"
 	"strings"
 	"unicode/utf8"
+
+	"github.com/ttacon/chalk"
 )
 
 func isReadableFile(path string) bool {
@@ -28,6 +32,9 @@ func isReadableFile(path string) bool {
 }
 
 func searchFiles(searchStr string) error {
+
+	red := chalk.Red.NewStyle().WithBackground(chalk.Red)
+	green := chalk.Green.NewStyle()
 	found := false
 	// Walk through the current directory to find files
 	err := filepath.Walk(".", func(path string, info os.FileInfo, err error) error {
@@ -37,17 +44,17 @@ func searchFiles(searchStr string) error {
 		// Only skip hidden files and directories (names starting with .) if they are not the root directory "."
 		if path != "." && strings.HasPrefix(info.Name(), ".") {
 			if info.IsDir() {
-				//fmt.Printf("Skipping hidden dir: %s\n", path)
+				fmt.Printf(red.Style("Skipping hidden dir: %s\n"), path)
 				return filepath.SkipDir // Skip entire hidden directories like .git
 			}
-			//fmt.Printf("Skipping hidden file: '%s'\n", path)
+			fmt.Printf(red.Style("Skipping hidden file: '%s'\n"), path)
 			return nil // Skip hidden files
 		}
 
 		// Only process regular files (not directories)
 		if !info.IsDir() {
 			if !isReadableFile(path) {
-				//				fmt.Printf("Skipping unreadable file: %s\n", path)
+				//fmt.Printf("Skipping unreadable file: %s\n", path)
 				return nil
 			}
 			//fmt.Printf("Processing file: %s\n", path)
@@ -58,7 +65,7 @@ func searchFiles(searchStr string) error {
 			if line != "" {
 				found = true
 				trimmed := strings.TrimSpace(line)
-				fmt.Printf("Found '%s' in %s on line %d: %s\n", searchStr, path, lineNumber, trimmed)
+				fmt.Printf(green.Style("Found '%s' in %s on line %d: %s\n"), searchStr, path, lineNumber, trimmed)
 			}
 		}
 		return nil
