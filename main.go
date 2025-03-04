@@ -18,7 +18,8 @@ func init() {
 
 func main() {
 	// Define CLI flags ("-h", "--help", "-f")
-	searchString := pflag.StringP("string", "f", "", "Search for a string in files and folders recursively.")
+	searchString := pflag.StringP("search", "f", "", "Search for a string in files and folders recursively.")
+	list := pflag.BoolP("list", "l", false, "List the entire directory from the root (/).")
 	help := pflag.BoolP("help", "h", false, "Show this help message.")
 	pflag.CommandLine.SortFlags = false
 	pflag.Parse()
@@ -31,13 +32,16 @@ func main() {
 
 	// Show help if requested
 	if *help || (pflag.NFlag() == 0) {
-		fmt.Print("Usage:\nchcknlegwill-cli -f <string> | Search for a string within the current directory and folders recursively.\n")
-		fmt.Print("chcknlegwill-cli -h --help Show this help message.\n")
+		fmt.Println("Usage:\nchcknlegwill-cli -f <string> | -v | -h | | --help")
+		fmt.Println("-f, --search <string>    Search for a string in files and folders recursivley.")
+		fmt.Println("-l, --list       	 List the entire directory from root (/).")
+		fmt.Println("-h, --help	    	 Show this help message.")
 		return
 	}
 
 	// Check if -f is provided but no value is given
-	if *searchString == "" && pflag.NFlag() > 0 {
+	iFlag := pflag.Lookup("f")
+	if iFlag != nil && iFlag.Changed && *searchString == "" {
 		fmt.Fprintf(os.Stderr, "Error: The -f flag requires a search string (e.g., -f keyword)\n")
 		os.Exit(1)
 	}
@@ -49,5 +53,14 @@ func main() {
 			//fmt.Fprintf(os.Stderr, red.Style("Error during search: %v\n"), err)
 			os.Exit(1)
 		}
+	}
+
+	if *list {
+		err := listDirectoryStructure(".")
+		if err != nil {
+			fmt.Fprintf(os.Stderr, "Error listing directory structure: %v\n", err)
+			os.Exit(1)
+		}
+		return
 	}
 }

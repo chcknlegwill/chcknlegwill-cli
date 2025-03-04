@@ -32,19 +32,16 @@ func isReadableFile(path string) bool {
 }
 
 func searchFiles(searchStr string) error {
+	//exPath := filepath.Dir(ex)
+	//^Need to create a new function for the --verbose flag
 
-	ex, err := os.Executable()
-	if err != nil {
-		panic(err)
-	}
-	exPath := filepath.Dir(ex)
 	//fmt.Println(exPath)
 
 	//red := chalk.Red.NewStyle().WithBackground(chalk.Red)
 	green := chalk.Green.NewStyle()
 	found := false
 	// Walk through the current directory to find files
-	err = filepath.Walk(".", func(path string, info os.FileInfo, err error) error {
+	err := filepath.Walk(".", func(path string, info os.FileInfo, err error) error {
 		if err != nil {
 			return err
 		}
@@ -72,7 +69,7 @@ func searchFiles(searchStr string) error {
 			if line != "" {
 				found = true
 				trimmed := strings.TrimSpace(line)
-				fmt.Printf(green.Style("Found")+" '%s' in path: %s/%s on line %d: %s\n", searchStr, exPath, path, lineNumber, trimmed)
+				fmt.Printf(green.Style("Found")+" '%s' in path: %s on line %d: %s\n", searchStr, path, lineNumber, trimmed)
 				//fmt.Println("Path: ", path)
 				//don't use commas unless you need to ^ concatenation works well.
 			}
@@ -104,4 +101,39 @@ func Readln(searchStr, path string) (string, int, error) {
 		}
 	}
 	return "", 0, fmt.Errorf("string '%s' not found in file %s", searchStr, path)
+}
+
+//for the --verbose flag:
+
+func listDirectoryStructure(rootPath string) error {
+	fmt.Println("Listing directory structure from root (/)...")
+
+	yellow := chalk.Yellow.NewStyle()
+
+	err := filepath.Walk(rootPath, func(path string, info os.FileInfo, err error) error {
+		if err != nil {
+			// Skip directories we don’t have permission to access, but warn the user
+			if os.IsPermission(err) {
+				fmt.Fprintf(os.Stderr, yellow.Style("Warning:")+" Permission denied for %s\n", path)
+				return filepath.SkipDir
+			}
+			return err
+		}
+
+		//want verbose to uncover hidden files (prefixed with a "." e.g. .gitignore)
+
+		// Print the path with indentation to show hierarchy
+		prefix := strings.Repeat("  ", max(0, strings.Count(path, string(os.PathSeparator))-1))
+		if info.IsDir() {
+			fmt.Printf("%s📁 %s/\n", prefix, info.Name())
+		} else {
+			fmt.Printf("%s📄 %s\n", prefix, info.Name())
+		}
+		return nil
+	})
+
+	if err != nil {
+		return fmt.Errorf("failed to walk directory: %v", err)
+	}
+	return nil
 }
