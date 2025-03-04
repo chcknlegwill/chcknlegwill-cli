@@ -32,9 +32,9 @@ func main() {
 
 	// Show help if requested
 	if *help || (pflag.NFlag() == 0) {
-		fmt.Println("Usage:\nchcknlegwill-cli -f <string> | -v | -h | | --help")
+		fmt.Println("Usage:\nchcknlegwill-cli -f <string> | -l | -h | | --help")
 		fmt.Println("-f, --search <string>    Search for a string in files and folders recursivley.")
-		fmt.Println("-l, --list       	 List the entire directory from root (/).")
+		fmt.Println("-l, --list       	 List the entire directory from current directory.")
 		fmt.Println("-h, --help	    	 Show this help message.")
 		return
 	}
