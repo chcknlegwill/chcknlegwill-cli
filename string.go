@@ -124,6 +124,15 @@ func listDirectoryStructure(rootPath string) error {
 
 		// Print the path with indentation to show hierarchy
 		prefix := strings.Repeat("  ", max(0, strings.Count(path, string(os.PathSeparator))-1))
+		//improve the output structure instead of icons, show the structure with the file extensions (maybe)
+		/*
+			e.g.
+			for Directory: Documents/notes.txt, Documents/notes/notes2.txt
+			equals: Documents/
+									|- note.txt
+									|- notes/
+											|- note2.txt
+		*/
 		if info.IsDir() {
 			fmt.Printf("%s📁 %s/\n", prefix, info.Name())
 		} else {
