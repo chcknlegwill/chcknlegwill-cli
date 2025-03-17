@@ -19,9 +19,9 @@ OS=$(uname -s)
 ARCH=$(uname -m)
 
 if [ "$OS" = "Linux" ] && [ "$ARCH" = "x86_64" ]; then
-  BINARY_URL="https://github.com/chcknlegwill/chcknlegwill-cli/releases/download/v1.0.3/chcknlegwill-cli-linux-x86_64-v1.0.4" #linux version
+  BINARY_URL="https://github.com/chcknlegwill/chcknlegwill-cli/releases/download/v1.0.4/chcknlegwill-cli-linux-x86_64-v1.0.4" #linux version
 elif [ "$OS" = "Darwin" ] && [ "$ARCH" = "arm64" ]; then
-  BINARY_URL="https://github.com/chcknlegwill/chcknlegwill-cli/releases/download/v1.0.3/chcknlegwill-cli-macos-amd64-v1.0.4" #macos version
+  BINARY_URL="https://github.com/chcknlegwill/chcknlegwill-cli/releases/download/v1.0.4/chcknlegwill-cli-macos-amd64-v1.0.4" #macos version
 else
   echo "Unsupported OS or architecture: $OS $ARCH"
   exit 1
