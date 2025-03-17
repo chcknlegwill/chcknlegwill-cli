@@ -37,7 +37,6 @@ func searchFiles(searchStr string) error {
 
 	//fmt.Println(exPath)
 
-
 	//red := chalk.Red.NewStyle().WithBackground(chalk.Red)
 	green := chalk.Green.NewStyle()
 	found := false
@@ -71,7 +70,7 @@ func searchFiles(searchStr string) error {
 				found = true
 				trimmed := strings.TrimSpace(line)
 				//colour in the found string green so its easier to read
-				fmt.Printf(green.Style("Found")+" '%s' in path: %s on line %d: " + green.Style("%s\n"), searchStr, path, lineNumber, trimmed)
+				fmt.Printf(green.Style("Found")+" '%s' in path: %s on line %d: "+green.Style("%s\n"), searchStr, path, lineNumber, trimmed)
 				//fmt.Println("Path: ", path)
 				//don't use commas unless you need to ^ concatenation works well.
 			}
@@ -147,4 +146,8 @@ func listDirectoryStructure(rootPath string) error {
 		return fmt.Errorf("failed to walk directory: %v", err)
 	}
 	return nil
+}
+
+func returnVersion(cliVersion string) {
+	return
 }
