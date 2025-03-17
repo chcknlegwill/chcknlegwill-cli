@@ -47,6 +47,10 @@ func main() {
 	}
 
 	// If -f is provided with a string, trigger search functionality
+
+	//TODO: Update with searching in specifiec directories e.g. if you are in one dir
+	//and want to search a different folder you would write:
+	//chcknlegwill-cli -f <string_to_search> <directory_to_search>
 	if *searchString != "" {
 		err := searchFiles(*searchString) // Pass the search string to searchFiles
 		if err != nil {
