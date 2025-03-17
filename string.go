@@ -45,7 +45,7 @@ func searchFiles(searchStr string) error {
 		if err != nil {
 			return err
 		}
-		// Only skip hidden files and directories (names starting with .) if they are not the root directory "."
+		//skip hidden files and directories (names starting with .) if they are not the root directory "."
 		if path != "." && strings.HasPrefix(info.Name(), ".") {
 			if info.IsDir() {
 				//fmt.Printf(red.Style("Skipping hidden dir: %s\n"), path)
@@ -55,7 +55,7 @@ func searchFiles(searchStr string) error {
 			return nil // Skip hidden files
 		}
 
-		// Only process regular files (not directories)
+		//only process regular files (not directories)
 		if !info.IsDir() {
 			if !isReadableFile(path) {
 				//fmt.Printf("Skipping unreadable file: %s\n", path)
@@ -80,7 +80,7 @@ func searchFiles(searchStr string) error {
 	if err != nil {
 		return err
 	}
-	// If no matches were found, inform the user
+	//if no matches were found, inform the user
 	if !found {
 		fmt.Printf("String '%s' not found in any files.\n", searchStr)
 	}
@@ -146,8 +146,4 @@ func listDirectoryStructure(rootPath string) error {
 		return fmt.Errorf("failed to walk directory: %v", err)
 	}
 	return nil
-}
-
-func returnVersion(cliVersion string) {
-	return
 }

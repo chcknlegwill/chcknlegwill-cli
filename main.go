@@ -19,6 +19,7 @@ func init() {
 func main() {
 	//define CLI flags ("-h", "--help", "-f")
 	//working functions
+	Dir := ""
 	searchForString := pflag.StringP("search", "f", "", "Search for a string in files and folders recursively.")
 	list := pflag.BoolP("list", "l", false, "List the entire directory from the root (/).")
 
@@ -37,11 +38,11 @@ func main() {
 	//show help if requested
 	if *help || (pflag.NFlag() == 0) {
 		fmt.Println("Usage:\nchcknlegwill-cli -f <string> | -l | -h | | --help")
-		fmt.Println("-f, --search <string>    Search for a string in files and folders recursivley.")
-		fmt.Println("-l, --list       	 List the entire directory from current directory.")
-		fmt.Println("-h, --help	    	 Show this help message.")
+		fmt.Println("-f, --search <string>      Search for a string in files and folders recursivley.")
+		fmt.Println("-l, --list   <directory>   List the entire directory from current directory.")
+		fmt.Println("-h, --help	    	   Show this help message.")
 		//change to version thing
-		fmt.Println("-v, --version	    	 Show the version of the program.")
+		fmt.Println("-v, --version	    	   Show the version of the program.")
 		return
 	}
 
@@ -63,8 +64,14 @@ func main() {
 	//TODO: Update with searching in specifiec directories e.g. if you are in one dir
 	//and want to search a different folder you would write:
 	//chcknlegwill-cli -f <string_to_search> <directory_to_search>
+	//may need to change the signature of the flags or create a custom one or smth like that to get
+	//multiple arguments from the cli as it's not working with any extra strings, not even crashing
 	if *searchForString != "" {
+		if Dir != "" {
+			return
+		}
 		err := searchFiles(*searchForString) // Pass the search string to searchFiles
+
 		if err != nil {
 			//fmt.Fprintf(os.Stderr, red.Style("Error during search: %v\n"), err)
 			os.Exit(1)
