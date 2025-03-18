@@ -10,13 +10,16 @@ import (
 //try to keep imports to a minumum as it just creates more headaches
 //^ like node (node_modules bigger than the universe)
 
-// chcknlegwill-cli v1.0.4
+// chcknlegwill-cli v1.0.5
 
 func init() {
 
 }
 
 func main() {
+	//ALWAYS make sure this and the comment above are updated upon each release
+	cliVersion := "v1.0.5"
+
 	//define CLI flags ("-h", "--help", "-f")
 	//working functions
 	Dir := ""
@@ -48,7 +51,7 @@ func main() {
 
 	//show the version of the program
 	if *version {
-		fmt.Println("v1.0.4")
+		fmt.Println(cliVersion)
 		return
 	}
 
