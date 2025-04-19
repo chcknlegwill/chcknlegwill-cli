@@ -10,7 +10,7 @@ import (
 //try to keep imports to a minumum as it just creates more headaches
 //^ like node (node_modules bigger than the universe)
 
-// chcknlegwill-cli v1.0.5
+// chcknlegwill-cli v1.0.6
 
 func init() {
 
@@ -18,7 +18,7 @@ func init() {
 
 func main() {
 	//ALWAYS make sure this and the comment above are updated upon each release
-	cliVersion := "v1.0.5"
+	cliVersion := "v1.0.6"
 
 	//define CLI flags ("-h", "--help", "-f")
 	//working functions
