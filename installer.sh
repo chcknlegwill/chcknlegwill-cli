@@ -19,9 +19,9 @@ OS=$(uname -s)
 ARCH=$(uname -m)
 
 if [ "$OS" = "Linux" ] && [ "$ARCH" = "x86_64" ]; then
-  BINARY_URL="https://github.com/chcknlegwill/chcknlegwill-cli/releases/download/v1.0.5/chcknlegwill-cli-linux-x86_64-v1.0.5" #linux version
+  BINARY_URL="https://github.com/chcknlegwill/chcknlegwill-cli/releases/download/v1.0.5/chcknlegwill-cli-linux-x86_64-v1.0.6" #linux version
 elif [ "$OS" = "Darwin" ] && [ "$ARCH" = "arm64" ]; then
-  BINARY_URL="https://github.com/chcknlegwill/chcknlegwill-cli/releases/download/v1.0.5/chcknlegwill-cli-macos-amd64-v1.0.5" #macos version
+  BINARY_URL="https://github.com/chcknlegwill/chcknlegwill-cli/releases/download/v1.0.5/chcknlegwill-cli-macos-amd64-v1.0.6" #macos version
 else
   echo "Unsupported OS or architecture: $OS $ARCH"
   exit 1
@@ -45,7 +45,7 @@ if ! chmod +x chcknlegwill-cli; then
   exit 1
 fi
 
-#/usr/local/bin is protected so you will need sudo, but makes it so you can call the 
+#/usr/local/bin is protected so will need sudo, but makes it so you can call the 
 # tool anywhere e.g. in ~ (/home/$USER/) or in ~/Documents/project/ for ease of use
 INSTALL_DIR="/usr/local/bin"
 TARGET_PATH="$INSTALL_DIR/chcknlegwill-cli"
