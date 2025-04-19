@@ -31,17 +31,13 @@ func isReadableFile(path string) bool {
 	return utf8.Valid(buf[:n]) && !strings.Contains(string(buf[:n]), "\x00")
 }
 
-func searchFiles(searchStr string) error {
-	//exPath := filepath.Dir(ex)
-	//^Need to create a new function for the --verbose flag
-
-	//fmt.Println(exPath)
-
+func searchFiles(searchStr string, dir string) error {
 	//red := chalk.Red.NewStyle().WithBackground(chalk.Red)
 	green := chalk.Green.NewStyle()
 	found := false
-	// Walk through the current directory to find files
-	err := filepath.Walk(".", func(path string, info os.FileInfo, err error) error {
+
+	//Walk through the current directory to find files
+	err := filepath.Walk(dir, func(path string, info os.FileInfo, err error) error {
 		if err != nil {
 			return err
 		}
@@ -51,6 +47,7 @@ func searchFiles(searchStr string) error {
 				//fmt.Printf(red.Style("Skipping hidden dir: %s\n"), path)
 				return filepath.SkipDir // Skip entire hidden directories like .git
 			}
+			//red style may be too aggressive (reserve for errors...)
 			//fmt.Printf(red.Style("Skipping hidden file: '%s'\n"), path)
 			return nil // Skip hidden files
 		}
@@ -70,9 +67,10 @@ func searchFiles(searchStr string) error {
 				found = true
 				trimmed := strings.TrimSpace(line)
 				//colour in the found string green so its easier to read
-				fmt.Printf(green.Style("Found")+" '%s' in path: %s on line %d: "+green.Style("%s\n"), searchStr, path, lineNumber, trimmed)
-				//fmt.Println("Path: ", path)
+				fmt.Printf(green.Style("Found")+" '%s' in file: %s on line %d: "+green.Style("%s\n"), searchStr, path, lineNumber, trimmed)
 				//don't use commas unless you need to ^ concatenation works well.
+
+				//make an improved -v (verbose flag) for all options to give the user more info about what the cli is doing.
 			}
 		}
 		return nil
@@ -80,9 +78,10 @@ func searchFiles(searchStr string) error {
 	if err != nil {
 		return err
 	}
-	//if no matches were found, inform the user
+
+	//if no matches found
 	if !found {
-		fmt.Printf("String '%s' not found in any files.\n", searchStr)
+		fmt.Printf("String '%s' not found in any files in %s.\n", searchStr, dir)
 	}
 	return nil
 }
@@ -113,7 +112,7 @@ func listDirectoryStructure(rootPath string) error {
 
 	err := filepath.Walk(rootPath, func(path string, info os.FileInfo, err error) error {
 		if err != nil {
-			// Skip directories we don’t have permission to access, but warn the user
+			//skip directories user does not have permission to access
 			if os.IsPermission(err) {
 				fmt.Fprintf(os.Stderr, yellow.Style("Warning:")+" Permission denied for %s\n", path)
 				return filepath.SkipDir
