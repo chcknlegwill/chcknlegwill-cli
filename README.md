@@ -1,6 +1,10 @@
 # chcknlegwill-cli
 A Cli tool written in Go
 
+## Usage:
+![CLI Demo](assets/output.gif)
+
+
 ## installation instructions
 
 copy & paste below into your cli:
