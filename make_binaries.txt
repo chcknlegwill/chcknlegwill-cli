@@ -1,6 +1,6 @@
 GOOS=linux go build -o chcknlegwill-cli-linux-x86_64 --linux 
 
-GOOS=darwin GOARCH=amd64 go build -o chcknlegwill-cli-macos-x86_64 --macos
+GOOS=darwin GOARCH=amd64 go build -o chcknlegwill-cli-macos-amd64 --macos
 
 
 bruh
