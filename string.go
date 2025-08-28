@@ -106,7 +106,8 @@ func Readln(searchStr, path string) (string, int, error) {
 //for the --verbose flag:
 
 func listDirectoryStructure(rootPath string) error {
-	fmt.Println("Listing directory structure from root (/)...")
+	//not root when searching in another location e.g. Documents/folder
+	fmt.Println("Listing directory structure from current directory...") 
 
 	yellow := chalk.Yellow.NewStyle()
 

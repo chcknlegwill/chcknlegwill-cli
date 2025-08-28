@@ -18,7 +18,7 @@ func init() {
 
 func main() {
 	//ALWAYS make sure this and the comment above are updated upon each release
-	cliVersion := "v1.0.6"
+	cliVersion := "chcknlegwill-cli v1.0.6"
 
 	//define CLI flags ("-h", "--help", "-f")
 	//working functions
