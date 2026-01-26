@@ -12,6 +12,9 @@ import (
 
 // chcknlegwill-cli v1.0.6
 
+//make a function / flag that replaces all spaces
+//with underscores for easier use with unix systems!!!!
+
 func init() {
 
 }

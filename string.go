@@ -58,8 +58,7 @@ func searchFiles(searchStr string, dir string) error {
 				//fmt.Printf("Skipping unreadable file: %s\n", path)
 				return nil
 			}
-			//fmt.Printf("Processing file: %s\n", path)
-			line, lineNumber, err := Readln(searchStr, path) // searchStr is the search string, path is the file path
+			line, lineNumber, err := Readln(searchStr, path)
 			if err != nil && !strings.Contains(err.Error(), "not found") {
 				return fmt.Errorf("error reading %s: %v", path, err)
 			}
@@ -107,7 +106,7 @@ func Readln(searchStr, path string) (string, int, error) {
 
 func listDirectoryStructure(rootPath string) error {
 	//not root when searching in another location e.g. Documents/folder
-	fmt.Println("Listing directory structure from current directory...") 
+	fmt.Println("Listing directory structure from current directory...")
 
 	yellow := chalk.Yellow.NewStyle()
 
